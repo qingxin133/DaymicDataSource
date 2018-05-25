@@ -1,0 +1,11 @@
+动态切换数据源实验1
+一、环境springboot + mybatis +mysql
+二、条件
+2.1service方法与dao方法同名
+2.2service方法里面只有dao查询没有其它操作
+2.3service方法查询是list结果
+2.4service查询使用的是mybatis查询
+三、过程
+3.1用spring aop技术,在service层设置切面,拦截有All字样的方法,取方法afterrunning的切入点，以SERVICE方法取同名的DAO方法，执行查询，循环数据源，拼接LIST结果
+四、结果
+返回service结果拼接了dao结果
