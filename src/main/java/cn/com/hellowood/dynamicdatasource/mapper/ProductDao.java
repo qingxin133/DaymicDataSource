@@ -19,7 +19,7 @@ import cn.com.hellowood.dynamicdatasource.modal.Product;
 @Mapper
 public interface ProductDao {
 	
-	List<Map> selectEquAll();
+	List<Map> equipList();
 	
     Product select(@Param("id") long id);
 

@@ -27,8 +27,8 @@ public class ProductService {
     @Autowired
     private ProductDao productDao;
 
-    public List<Map> selectEquAll(){
-		return productDao.selectEquAll();
+    public List<Map> equipList(){
+		return productDao.equipList();
 	}
     
     /**

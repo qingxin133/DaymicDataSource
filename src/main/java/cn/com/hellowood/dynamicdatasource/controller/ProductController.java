@@ -35,9 +35,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-	@RequestMapping(value = "/allEqu", method = RequestMethod.GET)
-    public CommonResponse selectEquAll(){
-		 return ResponseUtil.generateResponse(productService.selectEquAll());
+	@RequestMapping(value = "/equipList", method = RequestMethod.GET)
+    public CommonResponse equipList(){
+		 return ResponseUtil.generateResponse(productService.equipList());
 	}
     
     

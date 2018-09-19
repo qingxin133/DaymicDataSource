@@ -40,8 +40,8 @@ public class DynamicDataSourceAspect {
     private static boolean flag = true;
     private final String[] QUERY_PREFIX = {"All"};
     private static String daopackage = "cn.com.hellowood.dynamicdatasource.mapper.";
-//    private final  String pointStr = "execution( * cn.com.hellowood.dynamicdatasource.service.*.*(..))";
-    private final  String pointStr = "execution( * cn.com.hellowood.dynamicdatasource.mapper.*.*(..))";
+    private final  String pointStr = "execution( * cn.com.hellowood.dynamicdatasource.service.*.*(..))";
+//       private final  String pointStr = "execution( * cn.com.hellowood.dynamicdatasource.mapper.*.*(..))";
     
     /**
      * Dao aspect.
@@ -84,7 +84,15 @@ public class DynamicDataSourceAspect {
     }
 
   
-    //在方法执行完结后打印返回内容 
+    /**
+     * 在方法执行完结后打印返回内容 
+     * 因为要叠加数据结果，所以我们拦截service,但执行的是dao(如执行service会死循环)
+     * @param point
+     * @param result
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     */
     @AfterReturning(returning = "result",pointcut = "daoAspect()") 
     public void methodAfterReturing(JoinPoint point,Object result) throws ClassNotFoundException, NoSuchMethodException, SecurityException{
 		logger.info("--------------返回内容1----------------"); 
@@ -103,8 +111,14 @@ public class DynamicDataSourceAspect {
         if (isQueryMethod) {
 			MethodSignature signature = (MethodSignature)point.getSignature();
 			Method method = signature.getMethod(); //获取被拦截的方法 
+			
+
 			Type type1 = method.getGenericReturnType();
-			Class<?> daoClass = method.getDeclaringClass();
+			Class<?>[] parameterTypes = method.getParameterTypes();
+//			Class<?> daoClass = method.getDeclaringClass();
+//			Object daoBean = SpringUtil.getBean(daoClass);
+			String classPath = method.getDeclaringClass().getName().replace("service", "mapper").replace("Service", "Dao");
+			Class<?> daoClass=Class.forName(classPath);
 			Object daoBean = SpringUtil.getBean(daoClass);
 			
 //			Class<?> returnCType = method.getReturnType();
@@ -114,8 +128,8 @@ public class DynamicDataSourceAspect {
 				for(int i=0;i<DynamicDataSourceContextHolder.slaveDataSourceKeys.size();i++) {
 					//切换数据库
 			        DynamicDataSourceContextHolder.useSlaveDataSource();
-	//		        Method methodDao = daoClass.getMethod(method.getName(), method.getParameterTypes());
-			        Object obj2 = ReflectionUtils.invokeMethod(method,daoBean,point.getArgs());
+			        Method methodDao = daoClass.getMethod(method.getName(), parameterTypes);
+			        Object obj2 = ReflectionUtils.invokeMethod(methodDao,daoBean,point.getArgs());
 			        List list2 = (List)obj2;
 					logger.info("--------------返回内容"+i+"----------------");
 					logger.info("result2:"+list2.toString()); 
