@@ -1,10 +1,12 @@
 package cn.com.hellowood.dynamicdatasource.mapper;
 
-import cn.com.hellowood.dynamicdatasource.modal.Product;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import cn.com.hellowood.dynamicdatasource.modal.Product;
 
 /**
  * Product mapper for operate data of products table
@@ -16,6 +18,9 @@ import java.util.List;
 
 @Mapper
 public interface ProductDao {
+	
+	List<Map> selectEquAll();
+	
     Product select(@Param("id") long id);
 
     Integer update(Product product);

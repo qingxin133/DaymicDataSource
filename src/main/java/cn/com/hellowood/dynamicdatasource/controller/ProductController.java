@@ -1,6 +1,7 @@
 package cn.com.hellowood.dynamicdatasource.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,6 +35,12 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+	@RequestMapping(value = "/allEqu", method = RequestMethod.GET)
+    public CommonResponse selectEquAll(){
+		 return ResponseUtil.generateResponse(productService.selectEquAll());
+	}
+    
+    
     /**
      * Get product by id
      *

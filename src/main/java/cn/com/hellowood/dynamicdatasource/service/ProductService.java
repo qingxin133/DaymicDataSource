@@ -1,6 +1,7 @@
 package cn.com.hellowood.dynamicdatasource.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -26,6 +27,10 @@ public class ProductService {
     @Autowired
     private ProductDao productDao;
 
+    public List<Map> selectEquAll(){
+		return productDao.selectEquAll();
+	}
+    
     /**
      * Get product by id
      * If not found product will throw ServiceException
